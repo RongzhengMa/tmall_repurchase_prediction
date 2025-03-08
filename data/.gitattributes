@@ -1,0 +1,6 @@
+test_format2.csv filter=lfs diff=lfs merge=lfs -text
+train_format2.csv filter=lfs diff=lfs merge=lfs -text
+user_log_format1.csv filter=lfs diff=lfs merge=lfs -text
+test_format1.csv filter=lfs diff=lfs merge=lfs -text
+train_format1.csv filter=lfs diff=lfs merge=lfs -text
+user_info_format1.csv filter=lfs diff=lfs merge=lfs -text
