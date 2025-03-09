@@ -3,9 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 plt.rcParams['font.family'] = 'Arial'
 import seaborn as sns
+from sklearn.model_selection import train_test_split
 
 df_train = pd.read_csv('data/train_format1.csv')
-df_test = pd.read_csv('data/test_format1.csv')
 user_info = pd.read_csv('data/user_info_format1.csv')
 user_log = pd.read_csv('data/user_log_format1.csv')
 
@@ -176,13 +176,9 @@ cmap = sns.diverging_palette(220, 10, as_cmap=True)
 g = sns.heatmap(mcorr, mask=mask, cmap=cmap, square=True, annot=True,fmt='0.2f')
 
 
-df_test = pd.merge(df_test,user_info,on="user_id",how="left")
-df_test = pd.merge(df_test,total_logs_temp,on=["user_id","merchant_id"],how="left")
-df_test = pd.merge(df_test,unique_item_ids_temp1,on=["user_id","merchant_id"],how="left")
-df_test = pd.merge(df_test,categories_temp1,on=["user_id","merchant_id"],how="left")
-df_test = pd.merge(df_test,browse_days_temp1,on=["user_id","merchant_id"],how="left")
-df_test = pd.merge(df_test,four_features,on=["user_id","merchant_id"],how="left")
-df_test = df_test.bfill()
-df_test = df_test.ffill()
 
+
+train_df, test_df = train_test_split(df_train, test_size=0.2, random_state=42)
+train_df.to_csv("train_set.csv", index=False)
+test_df.to_csv("test_set.csv", index=False)
 
