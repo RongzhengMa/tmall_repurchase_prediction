@@ -39,3 +39,13 @@ logit_model.fit(X_train_full_scaled, y)
 
 print("Logit Coefficients:\n", logit_model.coef_)
 print("Logit Intercept:\n", logit_model.intercept_)
+
+X_test = test_df[features]
+X_test_scaled = scaler.transform(X_test)
+
+test_df["predicted_label"] = logit_model.predict(X_test_scaled)
+test_df["predicted_proba"] = logit_model.predict_proba(X_test_scaled)[:, 1] 
+
+test_df.to_csv("logit_test_set_with_predictions.csv", index=False)
+print("Predictions saved to logit_test_set_with_predictions.csv")
+
