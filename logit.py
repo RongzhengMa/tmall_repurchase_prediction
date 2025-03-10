@@ -3,6 +3,10 @@ from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix, roc_curve, auc, precision_recall_curve
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 
 train_path = "data/train_set.csv"
 test_path = "data/test_set.csv"
@@ -48,4 +52,43 @@ test_df["predicted_proba"] = logit_model.predict_proba(X_test_scaled)[:, 1]
 
 test_df.to_csv("logit_test_set_with_predictions.csv", index=False)
 print("Predictions saved to logit_test_set_with_predictions.csv")
+
+
+
+y_test = test_df["label"]
+y_pred = logit_model.predict(X_test_scaled) 
+y_probs = logit_model.predict_proba(X_test_scaled)[:, 1]  
+
+cm = confusion_matrix(y_test, y_pred)
+
+plt.figure(figsize=(6, 5))
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=["Not Repeat", "Repeat"], yticklabels=["Not Repeat", "Repeat"])
+plt.xlabel("Predicted Label")
+plt.ylabel("True Label")
+plt.title("Confusion Matrix")
+plt.show()
+
+fpr, tpr, _ = roc_curve(y_test, y_probs)
+roc_auc = auc(fpr, tpr)
+
+plt.figure(figsize=(6, 5))
+plt.plot(fpr, tpr, color="blue", label=f"ROC Curve (AUC = {roc_auc:.2f})")
+plt.plot([0, 1], [0, 1], linestyle="--", color="gray")
+plt.xlabel("False Positive Rate (FPR)")
+plt.ylabel("True Positive Rate (TPR)")
+plt.title("Receiver Operating Characteristic (ROC Curve)")
+plt.legend()
+plt.show()
+
+precision, recall, _ = precision_recall_curve(y_test, y_probs)
+
+plt.figure(figsize=(6, 5))
+plt.plot(recall, precision, color="red", label="Precision-Recall Curve")
+plt.xlabel("Recall")
+plt.ylabel("Precision")
+plt.title("Precision-Recall Curve")
+plt.legend()
+plt.show()
+
+
 
