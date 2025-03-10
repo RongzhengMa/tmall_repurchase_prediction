@@ -26,7 +26,7 @@ X_test_scaled = scaler.transform(X_test)
 
 # 4. training KNN model
 k = 5
-knn = KNeighborsClassifier(n_neighbors=k, weights='distance')  # 使用加权距离
+knn = KNeighborsClassifier(n_neighbors=k, weights='distance') 
 knn.fit(X_train_scaled, y_train)
 
 # 5. prediction
