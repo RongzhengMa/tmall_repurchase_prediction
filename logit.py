@@ -23,3 +23,19 @@ X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_st
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_val_scaled = scaler.transform(X_val)
+
+logit_model = LogisticRegression(solver="liblinear", max_iter=1000, random_state=1)
+logit_model.fit(X_train_scaled, y_train)
+
+y_val_pred = logit_model.predict(X_val_scaled)
+accuracy = accuracy_score(y_val, y_val_pred)
+print("Validation Accuracy:", accuracy)
+
+cv_scores = cross_val_score(logit_model, X_train_scaled, y_train, cv=3)
+print("Cross-validation Accuracy:", cv_scores.mean())
+
+X_train_full_scaled = scaler.fit_transform(X)
+logit_model.fit(X_train_full_scaled, y)
+
+print("Logit Coefficients:\n", logit_model.coef_)
+print("Logit Intercept:\n", logit_model.intercept_)
