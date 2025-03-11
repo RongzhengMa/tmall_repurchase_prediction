@@ -1,0 +1,7 @@
+pandas==2.2.2
+scikit-learn==1.5.1
+matplotlib==3.9.2
+seaborn==0.13.2
+h2o==3.46.0.1  
+numpy==1.26.4
+torch==2.2.2  
