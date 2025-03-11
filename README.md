@@ -2,7 +2,7 @@
 
 # Logistic Regression for Repurchase Prediction #
 
-**Processing Logic:**
+**Processing Logic:**<br>
 The goal of this project is to use a logistic regression model to predict whether a customer will repurchase an item based on various features. The process involves:<br>
 1.	Data Preparation: Loading and preprocessing data from train_set.csv and test_set.csv.<br>
 2.	Feature Selection: Using customer behavior metrics as predictive features.<br>
