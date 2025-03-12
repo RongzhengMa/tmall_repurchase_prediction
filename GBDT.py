@@ -33,7 +33,7 @@ gbm_pred = gbm.predict(x_val)
 gbm_proba = gbm.predict_proba(x_val)
 
 # 
-print('模型的评估报告：\n', classification_report(y_val, gbm_pred))
+print(' report:\n', classification_report(y_val, gbm_pred))
 # ROC curve
 fpr, tpr, thresholds = roc_curve(y_val, gbm_proba[:, 1])
 roc_auc = auc(fpr, tpr)
