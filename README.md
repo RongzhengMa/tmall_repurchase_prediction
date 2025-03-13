@@ -206,16 +206,16 @@ base_params = {<br>
     'min_samples_leaf': 1,<br>
     'random_state': 42 <br>
 }<br>
-Baseline Model - Training vs. Validation Metrics:
-               Metric  Training  Validation
-0              AUC-PR    1.0000      0.0807
-1  Weighted Precision    0.9999      0.8867
-2     Weighted Recall    0.9999      0.9376
-3   Weighted F1-Score    0.9999      0.9086
-4   Balanced Accuracy    0.9995      0.5003
-
+Baseline Model - Training vs. Validation Metrics:<br>
+               Metric  Training  Validation<br>
+0              AUC-PR    1.0000      0.0807<br>
+1  Weighted Precision    0.9999      0.8867<br>
+2     Weighted Recall    0.9999      0.9376<br>
+3   Weighted F1-Score    0.9999      0.9086<br>
+4   Balanced Accuracy    0.9995      0.5003<br>
+<br>
 ![image](https://github.com/user-attachments/assets/941eef4a-bcd7-4009-9e14-bba2e4b801f2)
-
+<br>
 2.Parameter Selection:<br>
 param_values = {<br>
     'n_estimators': [1, 10, 20, 30],<br>
@@ -242,11 +242,12 @@ Performance compared to baseline:<br>
 Baseline model - Validation AUC-PR: 0.0807<br>
 Best fine-tuned model - Validation AUC-PR: 0.1295<br>
 Absolute improvement: 0.0488<br>
-Percentage improvement: 60.52%<br>
+Percentage improvement: `60.52%`<br>
 ![image](https://github.com/user-attachments/assets/306d8381-0677-4b5c-89ee-f88998636565)
 
 4.Final results at optimal threshold<br>
 Fixed threshold: 0.1<br>
+Test Accuracy: `0.8930`<br>
 ![image](https://github.com/user-attachments/assets/7be35b44-1e93-4f13-83e5-bcb579e88e5e)
 
 **Limitations:** <br>
