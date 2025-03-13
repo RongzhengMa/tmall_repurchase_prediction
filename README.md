@@ -63,6 +63,60 @@ Fill missing (NaN) values using the last available value in the column to mainta
 Split the dataframe into 80% train set and 20% test set<br>
 <br>
 <br>
+## Model Evaluation
+
+### Accuracy
+Accuracy measures the proportion of correctly classified instances among the total instances:
+
+$$
+\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+$$
+
+where:
+
+- \( TP \) = True Positives  
+- \( TN \) = True Negatives  
+- \( FP \) = False Positives  
+- \( FN \) = False Negatives  
+
+
+### Precision
+Precision, also known as Positive Predictive Value (PPV), is the fraction of relevant instances among the retrieved instances:
+
+$$
+\text{Precision} = \frac{TP}{TP + FP}
+$$
+
+### Recall
+Recall, also known as Sensitivity or True Positive Rate (TPR), measures the ability of the model to capture positive instances:
+
+$$
+\text{Recall} = \frac{TP}{TP + FN}
+$$
+
+### Area Under the Precision-Recall Curve (AUCPR)
+AUCPR represents the area under the Precision-Recall curve, which is used to evaluate models in imbalanced classification problems:
+
+$$
+\text{AUCPR} = \int_0^1 P(R) \, dR
+$$
+
+where \( P(R) \) represents the Precision-Recall curve.
+
+### Area Under the ROC Curve (AUC)
+AUC measures the area under the Receiver Operating Characteristic (ROC) curve, which plots TPR against False Positive Rate (FPR):
+
+$$
+\text{AUC} = \int_0^1 TPR(FPR) \, dFPR
+$$
+
+where:
+
+$$
+\text{FPR} = \frac{FP}{FP + TN}
+$$
+
+
 
 ## Logistic Regression for Repurchase Prediction
 
@@ -409,60 +463,7 @@ Details of the Best Stacking Model:
   <img src="figures/Figure_13.png" alt="Accuracy" width="700" height="500">
 </p>
 
-## Model Evaluation
-
-### Accuracy
-Accuracy measures the proportion of correctly classified instances among the total instances:
-
-$$
-\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
-$$
-
-where:
-
-- \( TP \) = True Positives  
-- \( TN \) = True Negatives  
-- \( FP \) = False Positives  
-- \( FN \) = False Negatives  
-
-
-### Precision
-Precision, also known as Positive Predictive Value (PPV), is the fraction of relevant instances among the retrieved instances:
-
-$$
-\text{Precision} = \frac{TP}{TP + FP}
-$$
-
-### Recall
-Recall, also known as Sensitivity or True Positive Rate (TPR), measures the ability of the model to capture positive instances:
-
-$$
-\text{Recall} = \frac{TP}{TP + FN}
-$$
-
-### Area Under the Precision-Recall Curve (AUCPR)
-AUCPR represents the area under the Precision-Recall curve, which is used to evaluate models in imbalanced classification problems:
-
-$$
-\text{AUCPR} = \int_0^1 P(R) \, dR
-$$
-
-where \( P(R) \) represents the Precision-Recall curve.
-
-### Area Under the ROC Curve (AUC)
-AUC measures the area under the Receiver Operating Characteristic (ROC) curve, which plots TPR against False Positive Rate (FPR):
-
-$$
-\text{AUC} = \int_0^1 TPR(FPR) \, dFPR
-$$
-
-where:
-
-$$
-\text{FPR} = \frac{FP}{FP + TN}
-$$
-
-### Model Evaluation Results
+## Model Evaluation Results
 
 <div align="center">
   
