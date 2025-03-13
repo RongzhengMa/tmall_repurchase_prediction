@@ -92,7 +92,9 @@ def plot_confusion_matrix(y_true, y_pred, model_name):
     plt.xlabel("Predicted")
     plt.ylabel("Actual")
     plt.title(f"Confusion Matrix - {model_name}")
-    plt.savefig("figures/model_name.png", dpi=300, bbox_inches="tight")
+    filename = f"figures/{model_name}.png"
+    plt.savefig(filename, dpi=300, bbox_inches="tight")
+    print(model_name+" finished")
 
 plot_confusion_matrix(df_merged["label"], df_merged["prediction_xgb"], "XGBoost")
 plot_confusion_matrix(df_merged["label"], df_merged["prediction_h2o"], "H2O AutoML")
