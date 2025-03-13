@@ -32,7 +32,7 @@ Confusion Matrix
 •	Many false negatives (Repeat customers predicted as Not Repeat).
 
 ROC Curve
-![image](https://github.com/RongzhengMa/tmall_repurchase_prediction/blob/main/figures/Figure_11.png) <br>
+![image](https://github.com/RongzhengMa/tmall_repurchase_prediction/blob/34-logit_figure/figures/Figure11.png)) <br>
 •	AUC = 0.62, indicating moderate predictive ability.
 
 **Limitations:**
