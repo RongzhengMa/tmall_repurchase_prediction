@@ -32,11 +32,6 @@ User income, context about promotions or discounts, product price and ratings, a
 The dataset only captures a single promotional period (Double 11). Also, user behavior during this period may not represent normal shopping patterns, leading to data bias.
 
 
-
-# Limitation of Data
-
-It is necessary to extract features from the user profile table and user log table based on user_id and merchant_id (seller_id), and fill them into the df_train dataframe for training and evaluating the model.
-
 # Work Flow
 Feature Engineering -> 5 types of Modeling (Logit, GBDT, XGBoost, Random Forest, and H2O's AutoML) -> Evaluation
 
