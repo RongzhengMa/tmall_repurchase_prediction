@@ -247,8 +247,11 @@ Percentage improvement: `60.52%`<br>
 
 4.Final results at optimal threshold<br>
 Fixed threshold: 0.1<br>
+Test set AUC-PR: 0.1572
 Test Accuracy: `0.8930`<br>
-![image](https://github.com/user-attachments/assets/7be35b44-1e93-4f13-83e5-bcb579e88e5e)
+Test set Weighted Precision: `0.8950`<br>
+Test set weighted Recall: `0.8930`<br>
+Test set Weighted F1-Score: `0.8940`<br>
 
 **Limitations:** <br>
 1、there is extremly limited positive cases in raw data,exerting a huge risk of caputuring enough variation for prediction in cross-validation splits even ajusted by weighted measure or endeavors to avoid overfitting (decreasing n_estimators and max_depth while increasing min_samples_leaf and min_samples_splits)<br>
