@@ -98,8 +98,9 @@ Gradient Boosting Decision Trees (GBDT) is an ensemble learning technique that b
   - Combining multiple models could enhance accuracy and robustness.
 
 ### Visualization
+![image](https://github.com/RongzhengMa/tmall_repurchase_prediction/blob/main/figures/gbdt-roc.png) <br>
 
-The ROC curve (`gbdt-roc.png`) illustrates the model’s performance. A **ROC AUC of 0.61** suggests limited predictive capability, indicating the need for further refinement and feature optimization.
+The ROC curve illustrates the model’s performance. A **ROC AUC of 0.61** suggests limited predictive capability, indicating the need for further refinement and feature optimization.
 
 ## XGBoost
 
@@ -166,8 +167,9 @@ Extreme Gradient Boosting (XGBoost) is a powerful and efficient implementation o
   - Comparing with **GBDT**, **LightGBM**, or ensemble methods may lead to better performance.
 
 ### Visualization
+![image](https://github.com/RongzhengMa/tmall_repurchase_prediction/blob/main/figures/xgboost_roc.png) <br>
 
-The ROC curve (`xgboost_roc.png`) illustrates the model’s performance on the test set. A **ROC AUC of 0.63** indicates that while the model has improved over GBDT, further optimizations are needed for better prediction accuracy.
+The ROC curve illustrates the model’s performance on the test set. A **ROC AUC of 0.63** indicates that while the model has improved over GBDT, further optimizations are needed for better prediction accuracy.
 
 
 
