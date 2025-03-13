@@ -7,7 +7,7 @@ from sklearn.metrics import classification_report, precision_recall_curve, accur
 import matplotlib.pyplot as plt
 import json
 
-h2o.init(max_mem_size='16G')
+h2o.init(max_mem_size='20G')
 
 train_df = pd.read_csv('data/train_set.csv')
 test_df = pd.read_csv('data/test_set.csv')
@@ -29,14 +29,15 @@ num_ones = val_hf[val_hf[target] == "1", :].nrow
 scale_pos_weight = num_zeros / num_ones
 
 aml = H2OAutoML(
-    max_runtime_secs=3600,         
+    max_runtime_secs=3000,
+    max_models=20,         
     exclude_algos=["DeepLearning"], 
     balance_classes=True,         
     class_sampling_factors=[1, scale_pos_weight],
     stopping_metric="AUCPR",   
     seed=42,
-    nfolds=3,          
-    sort_metric="aucpr",
+    nfolds=2,          
+    sort_metric="aucpr"
 )
 
 aml.train(x=features, y=target, training_frame=train_hf, validation_frame=val_hf)
