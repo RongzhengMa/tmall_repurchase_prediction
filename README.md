@@ -304,19 +304,25 @@ base_params = {
 }
 ```
 
+<div align="center">
+
 | Metrics            | Training  | Validation |
-| ----------------- | --------- | ------ |
+|:------------------:|:---------:|:----------:|
 | AUC-PR |   1.0000 | 0.0807  |
 | Weighted Precision | 0.9999  | 0.8867 |
 | Weighted Recall | 0.9999  | 0.9376 |
 | Weighted F1-Score | 0.9999  | 0.9086 |
 | Balanced Accuracy | 0.9995  | 0.5003 | 
 
+<div>
+
 ![image](https://github.com/user-attachments/assets/11d5e4d1-af10-4a86-b415-1ad7086dde4c)
 
 
+<div align="left">
 - **First Stage Parameter Search:** 
   - Iterate focal input values while fix other input as default model
+ 
 ```
 param_values = {
     'n_estimators': [1, 10, 20, 30],
@@ -326,6 +332,8 @@ param_values = {
     'max_features': ['sqrt', 'log2', None]
 }
 ```
+<div>
+
 ![image](https://github.com/user-attachments/assets/6184d9b1-0b19-4209-ad5f-0108eeaed420)
 
 - **Optimal value Selection:** 
@@ -347,7 +355,10 @@ fine_param_grid = {
  - Best fine-tuned model - Validation AUC-PR: `0.1295`<br>
  - Absolute improvement: `0.0488`<br>
  - Percentage improvement: `60.52%`<br>
-![image](https://github.com/user-attachments/assets/306d8381-0677-4b5c-89ee-f88998636565)
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/306d8381-0677-4b5c-89ee-f88998636565" alt="Accuracy" width="700" height="500">
+</p>
 
 - **Optimal value Selection:** <br>
  - Fixed threshold: `0.1`<br>
