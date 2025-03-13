@@ -52,7 +52,7 @@ plt.show()
 
 
 user_info['age_range'] = user_info['age_range'].fillna(-1).astype(int)
-user_info['gender'] = user_info['gender'].fillna('Unknown').astype(str)
+user_info['gender'] = user_info['gender'].fillna(-1).astype(int)
 existing_values = sorted(user_info['age_range'].unique())
 plt.figure(figsize=(10, 6))
 sns.countplot(x='age_range', hue='gender', order=existing_values, data=user_info)
@@ -62,6 +62,9 @@ plt.title("Age and Gender Distribution")
 plt.legend(title="Gender")
 plt.show()
 
+
+user_info['age_range'].replace(-1,np.nan,inplace=True)
+user_info['gender'].replace(-1,np.nan,inplace=True)
 
 user_log['time_stamp'].hist(bins = 9)
 plt.title("Time Stamp Distribution") 
@@ -81,29 +84,30 @@ plt.show()
 
 
 df_train = pd.merge(df_train,user_info,on="user_id",how="left")
+
 total_logs_temp = user_log.groupby([user_log["user_id"],user_log["seller_id"]]).count().reset_index()[["user_id","seller_id","item_id"]]
 total_logs_temp.rename(columns={"seller_id":"merchant_id","item_id":"total_logs"},inplace=True)
-
-
 df_train = pd.merge(df_train,total_logs_temp,on=["user_id","merchant_id"],how="left")
+
+
 unique_item_ids_temp = user_log.groupby([user_log["user_id"],user_log["seller_id"],user_log["item_id"]]).count().reset_index()[["user_id","seller_id","item_id"]]
 unique_item_ids_temp1 = unique_item_ids_temp.groupby([unique_item_ids_temp["user_id"],unique_item_ids_temp["seller_id"]]).count().reset_index()
 unique_item_ids_temp1.rename(columns={"seller_id":"merchant_id","item_id":"unique_item_ids"},inplace=True)
-
-
 df_train = pd.merge(df_train,unique_item_ids_temp1,on=["user_id","merchant_id"],how="left")
+
+
 categories_temp = user_log.groupby([user_log["user_id"],user_log["seller_id"],user_log["cat_id"]]).count().reset_index()[["user_id","seller_id","cat_id"]]
 categories_temp1 = categories_temp.groupby([categories_temp["user_id"],categories_temp["seller_id"]]).count().reset_index()
 categories_temp1.rename(columns={"seller_id":"merchant_id","cat_id":"categories"},inplace=True)
-
-
 df_train = pd.merge(df_train,categories_temp1,on=["user_id","merchant_id"],how="left")
+
+
 browse_days_temp = user_log.groupby([user_log["user_id"],user_log["seller_id"],user_log["time_stamp"]]).count().reset_index()[["user_id","seller_id","time_stamp"]]
 browse_days_temp1 = browse_days_temp.groupby([browse_days_temp["user_id"],browse_days_temp["seller_id"]]).count().reset_index()
 browse_days_temp1.rename(columns={"seller_id":"merchant_id","time_stamp":"browse_days"},inplace=True)
-
-
 df_train = pd.merge(df_train,browse_days_temp1,on=["user_id","merchant_id"],how="left")
+
+
 one_clicks_temp = user_log.groupby([user_log["user_id"],user_log["seller_id"],user_log["action_type"]]).count().reset_index()[["user_id","seller_id","action_type","item_id"]]
 one_clicks_temp.rename(columns={"seller_id":"merchant_id","item_id":"times"},inplace=True)
 one_clicks_temp["one_clicks"] = one_clicks_temp["action_type"] == 0
@@ -114,20 +118,14 @@ one_clicks_temp["purchase_times"] = one_clicks_temp["action_type"] == 2
 one_clicks_temp["purchase_times"] = one_clicks_temp["purchase_times"] * one_clicks_temp["times"]
 one_clicks_temp["favourite_times"] = one_clicks_temp["action_type"] == 3
 one_clicks_temp["favourite_times"] = one_clicks_temp["favourite_times"] * one_clicks_temp["times"]
-
-
 four_features = one_clicks_temp.groupby([one_clicks_temp["user_id"],one_clicks_temp["merchant_id"]]).sum().reset_index()
 four_features = four_features.drop(["action_type","times"], axis=1)
 df_train = pd.merge(df_train,four_features,on=["user_id","merchant_id"],how="left")
 
 
+df_train.isnull().sum(axis=0)
 df_train = df_train.ffill()
-
-
-plt.style.use('ggplot')
-sns.countplot(x = 'age_range', order = [1,2,3,4,5,6,7,8],hue= 'gender',data = df_train)
-plt.title('Age and Gender Distribution (Train)')
-
+df_train.info()
 
 colnm = df_train.columns.tolist()
 plt.figure(figsize = (5, 4))
@@ -176,9 +174,10 @@ cmap = sns.diverging_palette(220, 10, as_cmap=True)
 g = sns.heatmap(mcorr, mask=mask, cmap=cmap, square=True, annot=True,fmt='0.2f')
 
 
-
-
 train_df, test_df = train_test_split(df_train, test_size=0.2, random_state=42)
-train_df.to_csv("train_set.csv", index=False)
-test_df.to_csv("test_set.csv", index=False)
+train_df.to_csv("data/train_set.csv", index=False)
+test_df.to_csv("data/test_set.csv", index=False)
+
+
+
 
