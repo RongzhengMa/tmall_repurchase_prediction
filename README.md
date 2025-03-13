@@ -279,16 +279,16 @@ The goal of this project is to use a randomforest regression model to predict wh
 
 ### Key Functions:
 
-`skf = StratifiedKFold(n_splits=2, shuffle=True, random_state=42))`: stratified two folds coarse grid search for selecting parameters<br>
-`cv = StratifiedKFold(n_splits=100, shuffle=True, random_state=42)`: stratified 100 folds fine-grained gird search for optimal value of focal parameter <br>
-`model = RandomForestClassifier(**params)`<br>
-`y_test_prob = best_model.predict_proba(X_test_scaled)[:, 1]`:predicted probability of repurchase
-`y_test_pred_fixed = (y_test_prob >= fixed_threshold).astype(int)`: predicted labels of repurchase <br>
-`def calculate_auc_pr(y_true, y_prob):`precision, recall, _ = precision_recall_curve(y_true, y_prob) return auc(recall, precision) <br>
-`val_accuracy = balanced_accuracy_score(y_val, y_val_pred_baseline)`: balanced accuracy score  <br>
-`val_precision = precision_score(y_val, y_val_pred_baseline,average='weighted')`:weighted precision <br>
-`val_recall = recall_score(y_val, y_val_pred_baseline,average='weighted')`:weighted recall <br>
-`val_f1 = f1_score(y_val, y_val_pred_baseline,average='weighted')`: weighted f1 score <br>
+ - `skf = StratifiedKFold(n_splits=2, shuffle=True, random_state=42))`: stratified two folds coarse grid search for selecting parameters<br>
+ - `cv = StratifiedKFold(n_splits=100, shuffle=True, random_state=42)`: stratified 100 folds fine-grained gird search for optimal value of focal parameter <br>
+ - `model = RandomForestClassifier(**params)`<br>
+ - `y_test_prob = best_model.predict_proba(X_test_scaled)[:, 1]`:predicted probability of repurchase
+ - `y_test_pred_fixed = (y_test_prob >= fixed_threshold).astype(int)`: predicted labels of repurchase <br>
+ - `def calculate_auc_pr(y_true, y_prob):`precision, recall, _ = precision_recall_curve(y_true, y_prob) return auc(recall, precision) <br>
+ - `val_accuracy = balanced_accuracy_score(y_val, y_val_pred_baseline)`: balanced accuracy score  <br>
+ - `val_precision = precision_score(y_val, y_val_pred_baseline,average='weighted')`:weighted precision <br>
+ - `val_recall = recall_score(y_val, y_val_pred_baseline,average='weighted')`:weighted recall <br>
+ - `val_f1 = f1_score(y_val, y_val_pred_baseline,average='weighted')`: weighted f1 score <br>
 
 ### Results & Figures:
 
@@ -329,7 +329,7 @@ param_values = {
 ![image](https://github.com/user-attachments/assets/6184d9b1-0b19-4209-ad5f-0108eeaed420)
 
 - **Optimal value Selection:** 
-  - Iterate single focal input with fine-grained steps while set other inputs as safe values to avoid overfitting
+  - Iterate single input Grid Search with fine-grained steps while set other inputs as safe values inferred from last step to avoid overfitting
  ```
 fine_param_grid = {
     'max_depth': [1],
@@ -343,26 +343,25 @@ fine_param_grid = {
 
 **Best parameters: `max_depth=1`,`n_estimators=1`,`min_samples_leaf=8`,`min_samples_split=10`,`max_features=None`,`random_state=42`**
 
-Performance compared to baseline:
-Baseline model - Validation AUC-PR: `0.0807`<br>
-Best fine-tuned model - Validation AUC-PR: `0.1295`<br>
-Absolute improvement: `0.0488`<br>
-Percentage improvement: `60.52%`<br>
+ - Baseline model - Validation AUC-PR: `0.0807`<br>
+ - Best fine-tuned model - Validation AUC-PR: `0.1295`<br>
+ - Absolute improvement: `0.0488`<br>
+ - Percentage improvement: `60.52%`<br>
 ![image](https://github.com/user-attachments/assets/306d8381-0677-4b5c-89ee-f88998636565)
 
 - **Optimal value Selection:** <br>
-Fixed threshold: `0.1`<br>
-Test set AUC-PR: `0.1572`
-Test Accuracy: `0.8930`<br>
-Test set Weighted Precision: `0.8950`<br>
-Test set weighted Recall: `0.8930`<br>
-Test set Weighted F1-Score: `0.8940`<br>
+ - Fixed threshold: `0.1`<br>
+ - Test set AUC-PR: `0.1572`
+ - Test Accuracy: `0.8930`<br>
+ - Test set Weighted Precision: `0.8950`<br>
+ - Test set weighted Recall: `0.8930`<br>
+ - Test set Weighted F1-Score: `0.8940`<br>
 
 ### Limitations: 
 
-- **Imbalanced Set:**- 
+- **Imbalanced Set:** 
   - there are extremly limited positive cases in raw data,exerting a huge risk of caputuring enough variation for prediction in cross-validation splits even ajusted by weighted measure or endeavors to avoid overfitting (decreasing n_estimators and max_depth while increasing min_samples_leaf and min_samples_splits)
-- **Limited Features:**-
+- **Limited Features:**
   - the limited number of features at hand makes it hard to test different combination of feature subset (refer to the decreasing performance after restrict feature inputs)
 
 
