@@ -64,7 +64,7 @@ Split the dataframe into 80% train set and 20% test set<br>
 <br>
 <br>
 
-## Model Evaluation
+## Model Evaluation Standards
 
 ### Accuracy
 Accuracy measures the proportion of correctly classified instances among the total instances:
