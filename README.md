@@ -41,3 +41,133 @@ ROC Curve
 2.	Model Selection: Logistic regression is linear. <br>
 
 
+## GBDT
+
+### Overview
+Gradient Boosting Decision Trees (GBDT) is an ensemble learning technique that builds multiple weak decision trees sequentially, with each new tree correcting the errors of the previous ones. It is particularly effective for structured data and can capture complex patterns in customer behavior.
+
+### Data Processing & Modeling Steps
+
+- **Feature Engineering:**
+  - Removed irrelevant identifiers such as `user_id`, `merchant_id`, and the target label.
+  - Incorporated behavioral and transactional features extracted from user logs.
+
+- **Data Splitting:**
+  - Training Set: 80%
+  - Validation Set: 20%
+
+- **Hyperparameter Optimization:**
+  - Employed **RandomizedSearchCV** with 3-fold cross-validation to fine-tune model parameters.
+  - Optimal parameters identified:
+  ```
+  n_estimators = 1200
+  learning_rate = 0.0114
+  max_depth = 4
+  min_samples_leaf = 18
+  subsample = 0.7
+  max_features = 0.9
+  ```
+
+### Model Performance
+
+- **Cross-validation ROC AUC:** `0.6227`
+- **Validation ROC AUC:** `0.6105`
+
+#### Classification Report (Validation Set):
+
+| Class | Precision | Recall | F1-score |
+|-------|-----------|--------|----------|
+| 0 (Not Returning) | 0.94 | 1.00 | 0.97 |
+| 1 (Returning) | 0.15 | 0.00 | 0.00 |
+
+- The model effectively identifies non-returning customers but struggles with classifying returning customers due to the **severe class imbalance**.
+
+### Limitations and Future Enhancements
+
+- **Class Imbalance:**
+  - The dataset is highly imbalanced, significantly affecting recall for returning customers.
+  - Potential solutions include **SMOTE (Synthetic Minority Over-sampling Technique)** or **cost-sensitive learning**.
+
+- **Feature Engineering:**
+  - Incorporating additional behavioral, demographic, and historical purchase data could improve predictive power.
+
+- **Alternative Models:**
+  - Exploring **XGBoost** or **LightGBM** might yield better performance.
+
+- **Ensemble Methods:**
+  - Combining multiple models could enhance accuracy and robustness.
+
+### Visualization
+
+The ROC curve (`gbdt-roc.png`) illustrates the model’s performance. A **ROC AUC of 0.61** suggests limited predictive capability, indicating the need for further refinement and feature optimization.
+
+## XGBoost
+
+### Overview
+Extreme Gradient Boosting (XGBoost) is a powerful and efficient implementation of gradient boosting, designed for high performance and scalability. It is particularly effective for structured data and is widely used for classification and regression tasks. XGBoost employs a combination of decision trees and boosting techniques to minimize error iteratively, making it an ideal choice for customer behavior prediction.
+
+### Data Processing & Modeling Steps
+
+- **Feature Engineering:**
+  - Removed irrelevant identifiers such as `user_id`, `merchant_id`, and the target label.
+  - Incorporated behavioral and transactional features extracted from user logs.
+
+- **Data Splitting:**
+  - Training Set: 80%
+  - Validation Set: 20%
+
+- **Hyperparameter Optimization:**
+  - Employed **RandomizedSearchCV** with 3-fold cross-validation to fine-tune model parameters.
+  - Optimal parameters identified:
+  ```
+  n_estimators = 100
+  learning_rate = 0.0422
+  max_depth = 3
+  min_child_weight = 15
+  subsample = 0.75
+  colsample_bytree = 1.0
+  ```
+
+### Model Performance
+
+- **Validation Performance:**
+  - **Validation ROC AUC:** `0.63`
+  - **Best threshold (Validation Set):** `0.5879`
+
+#### Classification Report (Validation Set):
+
+| Class             | Precision | Recall | F1-score |
+| ----------------- | --------- | ------ | -------- |
+| 0 (Not Returning) | 0.95      | 0.69   | 0.80     |
+| 1 (Returning)     | 0.09      | 0.49   | 0.16     |
+
+- The model demonstrates improved recall for returning customers compared to GBDT but still exhibits significant class imbalance issues.
+
+#### Test Set Evaluation (After Threshold Tuning):
+
+| Class             | Precision | Recall | F1-score |
+| ----------------- | --------- | ------ | -------- |
+| 0 (Not Returning) | 0.95      | 0.87   | 0.91     |
+| 1 (Returning)     | 0.12      | 0.28   | 0.17     |
+
+- **Test Accuracy:** `0.8336`
+- The threshold tuning helped improve recall for returning customers but at the cost of reduced precision.
+
+### Limitations and Future Enhancements
+
+- **Class Imbalance:**
+  - The dataset is highly imbalanced, affecting the recall of returning customers.
+  - Techniques like **SMOTE**, **focal loss**, or adjusting `scale_pos_weight` could improve performance.
+
+- **Feature Engineering:**
+  - Additional features, such as customer demographics, browsing patterns, and purchase frequency, could enhance predictive power.
+
+- **Alternative Models:**
+  - Comparing with **GBDT**, **LightGBM**, or ensemble methods may lead to better performance.
+
+### Visualization
+
+The ROC curve (`xgboost_roc.png`) illustrates the model’s performance on the test set. A **ROC AUC of 0.63** indicates that while the model has improved over GBDT, further optimizations are needed for better prediction accuracy.
+
+
+
