@@ -98,7 +98,7 @@ Gradient Boosting Decision Trees (GBDT) is an ensemble learning technique that b
   - Combining multiple models could enhance accuracy and robustness.
 
 ### Visualization
-![image](https://github.com/RongzhengMa/tmall_repurchase_prediction/blob/main/figures/gbdt-roc.png) <br>
+![image](https://github.com/RongzhengMa/tmall_repurchase_prediction/blob/main/figures/gbdt_roc.png) <br>
 
 The ROC curve illustrates the model’s performance. A **ROC AUC of 0.61** suggests limited predictive capability, indicating the need for further refinement and feature optimization.
 
