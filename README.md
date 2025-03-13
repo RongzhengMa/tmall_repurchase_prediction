@@ -378,7 +378,9 @@ base_params = {
 
 
 <div align="left">
-- **First Stage Parameter Search:** 
+
+- **Model Parameter Selection:**
+
   - Iterate focal input values while fix other input as default model
  
 ```
@@ -409,22 +411,22 @@ fine_param_grid = {
 
 **Best parameters: `max_depth=1`,`n_estimators=1`,`min_samples_leaf=8`,`min_samples_split=10`,`max_features=None`,`random_state=42`**
 
- - Baseline model - Validation AUC-PR: `0.0807`<br>
- - Best fine-tuned model - Validation AUC-PR: `0.1295`<br>
- - Absolute improvement: `0.0488`<br>
- - Percentage improvement: `60.52%`<br>
+   - Baseline model - Validation AUC-PR: `0.0807`<br>
+   - Best fine-tuned model - Validation AUC-PR: `0.1295`<br>
+   - Absolute improvement: `0.0488`<br>
+   - Percentage improvement: `60.52%`<br>
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/306d8381-0677-4b5c-89ee-f88998636565" alt="Accuracy" width="700" height="500">
 </p>
 
 - **Optimal value Selection:** <br>
- - Fixed threshold: `0.1`<br>
- - Test set AUC-PR: `0.1572`
- - Test Accuracy: `0.8930`<br>
- - Test set Weighted Precision: `0.8950`<br>
- - Test set weighted Recall: `0.8930`<br>
- - Test set Weighted F1-Score: `0.8940`<br>
+   - Fixed threshold: `0.1`<br>
+   - Test set AUC-PR: `0.1572`
+   - Test Accuracy: `0.8930`<br>
+   - Test set Weighted Precision: `0.8950`<br>
+   - Test set weighted Recall: `0.8930`<br>
+   - Test set Weighted F1-Score: `0.8940`<br>
 
 ### Limitations: 
 
