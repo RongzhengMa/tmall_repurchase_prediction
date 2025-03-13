@@ -26,13 +26,19 @@ Validation Accuracy: 0.938<br>
 Cross-validation Accuracy: 0.939<br>
 
 Confusion Matrix
-![image](https://github.com/RongzhengMa/tmall_repurchase_prediction/blob/main/figures/Figure_10.png) <br>
+<p align="center">
+  <img src="figures/Figure_10.png" alt="Accuracy" width="700" height="500">
+</p>
 
 •	High accuracy but imbalanced predictions.
 •	Many false negatives (Repeat customers predicted as Not Repeat).
 
 ROC Curve
-![image](https://github.com/RongzhengMa/tmall_repurchase_prediction/blob/34-logit_figure/figures/Figure11.png)) <br>
+
+<p align="center">
+  <img src="figures/Figure11.png" alt="Accuracy" width="700" height="500">
+</p>
+
 •	AUC = 0.62, indicating moderate predictive ability.
 
 **Limitations:**
@@ -75,10 +81,14 @@ Gradient Boosting Decision Trees (GBDT) is an ensemble learning technique that b
 
 #### Classification Report (Validation Set):
 
+<div align="center">
+  
 | Class | Precision | Recall | F1-score |
-|-------|-----------|--------|----------|
+|:-------:|:-----------:|:--------:|:----------:|
 | 0 (Not Returning) | 0.94 | 1.00 | 0.97 |
 | 1 (Returning) | 0.15 | 0.00 | 0.00 |
+
+</div>
 
 - The model effectively identifies non-returning customers but struggles with classifying returning customers due to the **severe class imbalance**.
 
@@ -98,7 +108,9 @@ Gradient Boosting Decision Trees (GBDT) is an ensemble learning technique that b
   - Combining multiple models could enhance accuracy and robustness.
 
 ### Visualization
-![image](https://github.com/RongzhengMa/tmall_repurchase_prediction/blob/main/figures/gbdt_roc.png) <br>
+<p align="center">
+  <img src="figures/gbdt_roc.png" alt="Accuracy" width="700" height="500">
+</p>
 
 The ROC curve illustrates the model’s performance. A **ROC AUC of 0.61** suggests limited predictive capability, indicating the need for further refinement and feature optimization.
 
@@ -137,19 +149,27 @@ Extreme Gradient Boosting (XGBoost) is a powerful and efficient implementation o
 
 #### Classification Report (Validation Set):
 
+<div align="center">
+  
 | Class             | Precision | Recall | F1-score |
-| ----------------- | --------- | ------ | -------- |
+|:-----------------:|:---------:|:------:|:--------:|
 | 0 (Not Returning) | 0.95      | 0.69   | 0.80     |
 | 1 (Returning)     | 0.09      | 0.49   | 0.16     |
+
+</div>
 
 - The model demonstrates improved recall for returning customers compared to GBDT but still exhibits significant class imbalance issues.
 
 #### Test Set Evaluation (After Threshold Tuning):
 
+<div align="center">
+
 | Class             | Precision | Recall | F1-score |
-| ----------------- | --------- | ------ | -------- |
+|:-----------------:|:---------:|:------:|:--------:|
 | 0 (Not Returning) | 0.95      | 0.87   | 0.91     |
 | 1 (Returning)     | 0.12      | 0.28   | 0.17     |
+
+</div>
 
 - **Test Accuracy:** `0.8336`
 - The threshold tuning helped improve recall for returning customers but at the cost of reduced precision.
@@ -167,7 +187,9 @@ Extreme Gradient Boosting (XGBoost) is a powerful and efficient implementation o
   - Comparing with **GBDT**, **LightGBM**, or ensemble methods may lead to better performance.
 
 ### Visualization
-![image](https://github.com/RongzhengMa/tmall_repurchase_prediction/blob/main/figures/xgboost_roc.png) <br>
+<p align="center">
+  <img src="figures/xgboost_roc.png" alt="Accuracy" width="700" height="500">
+</p>
 
 The ROC curve illustrates the model’s performance on the test set. A **ROC AUC of 0.63** indicates that while the model has improved over GBDT, further optimizations are needed for better prediction accuracy.
 
@@ -255,6 +277,145 @@ Test set Weighted F1-Score: `0.8940`<br>
 
 **Limitations:** <br>
 1、there is extremly limited positive cases in raw data,exerting a huge risk of caputuring enough variation for prediction in cross-validation splits even ajusted by weighted measure or endeavors to avoid overfitting (decreasing n_estimators and max_depth while increasing min_samples_leaf and min_samples_splits)<br>
-2、the limited number of features at hand makes it hard to test different combination of feature subset (refer to the decreasing performance after restrict feature inputs)<br>
+2、the limited number of features at hand makes it hard to test different combination of feature subset (refer to the decreasing performance after restrict feature inputs)<be>
+
+
+## Stacking Model
+
+### Overview 
+
+In our project, we employed a Stacked Ensemble Model to improve the prediction accuracy for customer repurchase behavior. Stacking, or stacked generalization, is an ensemble learning technique that combines multiple base models to form a stronger predictive model. This approach leverages the strengths of various algorithms to achieve better performance than individual models.​
+
+The stacking process involves training several base models on the same dataset and then using their predictions as inputs for a higher-level meta-model, which makes the final prediction. This meta-model learns how to best combine the base models' outputs to enhance overall performance.​
+
+In our implementation, we utilized H2O's AutoML functionality to automatically train and evaluate a variety of models, including Generalized Linear Models (GLM), Gradient Boosting Machines (GBM), and Distributed Random Forests (DRF). The AutoML process selected a Stacked Ensemble as the best-performing model.​
+
+### Best Stacking Model
+
+Details of the Best Stacking Model:
+
+<pre>
+    Model Type: Stacked Ensemble​
+    Stacking Strategy: Cross-validation​
+    Number of Base Models (Used/Total): 5/20​
+    GBM Base Models (Used/Total): 4/17​
+    GLM Base Models (Used/Total): 1/1​
+    DRF Base Models (Used/Total): 0/2​
+    Metalearner Algorithm: GLM​
+    Metalearner Fold Assignment Scheme: Random​
+    Metalearner Number of Folds (nfolds): 2​
+    Custom Metalearner Hyperparameters: None​
+</pre>
+
+### Model Performance
+
+<p align="center">
+  <img src="figures/Figure_13.png" alt="Accuracy" width="700" height="500">
+</p>
+
+## Model Evaluation
+
+### Accuracy
+Accuracy measures the proportion of correctly classified instances among the total instances:
+
+$$
+\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+$$
+
+where:
+
+- \( TP \) = True Positives  
+- \( TN \) = True Negatives  
+- \( FP \) = False Positives  
+- \( FN \) = False Negatives  
+
+
+### Precision
+Precision, also known as Positive Predictive Value (PPV), is the fraction of relevant instances among the retrieved instances:
+
+$$
+\text{Precision} = \frac{TP}{TP + FP}
+$$
+
+### Recall
+Recall, also known as Sensitivity or True Positive Rate (TPR), measures the ability of the model to capture positive instances:
+
+$$
+\text{Recall} = \frac{TP}{TP + FN}
+$$
+
+### Area Under the Precision-Recall Curve (AUCPR)
+AUCPR represents the area under the Precision-Recall curve, which is used to evaluate models in imbalanced classification problems:
+
+$$
+\text{AUCPR} = \int_0^1 P(R) \, dR
+$$
+
+where \( P(R) \) represents the Precision-Recall curve.
+
+### Area Under the ROC Curve (AUC)
+AUC measures the area under the Receiver Operating Characteristic (ROC) curve, which plots TPR against False Positive Rate (FPR):
+
+$$
+\text{AUC} = \int_0^1 TPR(FPR) \, dFPR
+$$
+
+where:
+
+$$
+\text{FPR} = \frac{FP}{FP + TN}
+$$
+
+### Model Evaluation Results
+
+<div align="center">
+  
+|       Model            |  Accuracy  |  AUCPR  | Precision |  Recall  |   AUC   |
+|:----------------------:|:---------:|:-------:|:---------:|:--------:|:-------:|
+|       XGBoost         |   0.8336   |  0.1083 |   0.1217  |  0.2828  |  0.6271 |
+|    H2O AutoML        |   0.8269   |  0.1093 |   0.1203  |  0.2962  |  0.6257 |
+| Gradient Boosting    |   0.9397   |  0.1081 |   0.3333  |  0.0003  |  0.6258 |
+|   Random Forest      |   0.8930   |  0.0694 |   0.1284  |  0.1338  |  0.5377 |
+| Logistic Regression  |   0.9394   |  0.1080 |   0.1739  |  0.0013  |  0.6230 |
+<div>
+
+<div align="left">
+
+### Best Model Selection
+
+From the evaluation results, we observe the following key insights:
+
+- The best model in terms of AUCPR (0.1093) is H2O AutoML, which slightly outperforms XGBoost (0.1083) and Gradient Boosting (0.1081).
+
+- Accuracy is highest for Gradient Boosting (0.9397) and Logistic Regression (0.9394), but these models show extremely low recall values (0.0003 and 0.0013, respectively), indicating that they fail to capture positive instances effectively.
+
+- Recall is highest for H2O AutoML (0.2962) and XGBoost (0.2828), suggesting that these models better identify the positive class.
+
+- Precision is highest for Gradient Boosting (0.3333), but with an almost negligible recall (0.0003), making it unreliable for practical use.
+<div>
+
+## Limitation and Extension
+
+### 1. Imbalance data
+
+The dataset contains an extremely limited number of positive cases, leading to an imbalance issue that may negatively impact model performance. To mitigate this, we can explore the following approaches:
+
+- Oversampling: Techniques such as SMOTE (Synthetic Minority Over-sampling Technique) can be used to generate synthetic samples for the minority class.
+
+- Undersampling: Reducing the number of negative samples to balance the class distribution.
+
+- Class Weight Adjustment: Assigning higher weights to the positive class in models like Logistic Regression, XGBoost, or Gradient Boosting to prevent them from being biased toward the negative class.
+
+### 2. Limited Features
+
+Currently, we only have around 10 features, which may limit the model’s ability to capture complex patterns in the data. To improve feature representation, we can:
+
+- Create interaction terms: Introduce polynomial or cross-product features to capture non-linear relationships.
+
+- Feature extraction: Construct meaningful features from raw data (e.g., aggregating historical behaviors, time-based features, or merchant and product features).
+
+### 3. Exploring Alternative Models
+
+The current models rely on traditional ML approaches (GBM, RF, GLM), but some deep learning models may offer additional improvements. We can also try deep learning models and the XGBoost model in the stacking model.
 
 
