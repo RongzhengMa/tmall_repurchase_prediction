@@ -708,9 +708,6 @@ combined_fixed_recall = recall_score(y_combined, y_combined_pred_fixed, average=
 combined_fixed_f1 = f1_score(y_combined, y_combined_pred_fixed, average='weighted')
 combined_fixed_accuracy = accuracy_score(y_combined, y_combined_pred_fixed)
 
-# Generate confusion matrix for combined set
-cm_combined = confusion_matrix(y_combined, y_combined_pred_fixed)
-
 print("\n=== Combined dataset metrics (threshold=0.1) ===")
 print(f"AUC-PR: {combined_auc_pr:.4f}")  # AUC-PR remains the same, just reusing the probabilities
 print(f"Precision: {combined_fixed_precision:.4f}")
@@ -734,9 +731,6 @@ test_fixed_precision = precision_score(y_test, y_test_pred_fixed, average='weigh
 test_fixed_recall = recall_score(y_test, y_test_pred_fixed, average='weighted')
 test_fixed_f1 = f1_score(y_test, y_test_pred_fixed, average='weighted')
 test_fixed_accuracy = accuracy_score(y_test, y_test_pred_fixed)
-
-# Generate confusion matrix for test set
-cm_test = confusion_matrix(y_test, y_test_pred_fixed)
 
 # Calculate AUC-PR on test set
 test_precision_curve, test_recall_curve, _ = precision_recall_curve(y_test, y_test_prob)
@@ -794,21 +788,6 @@ for i, v in enumerate(comparison_data_fixed['Combined Training (0.1)']):
     plt.text(i - width/2, v + 0.02, f'{v:.3f}', ha='center')
 for i, v in enumerate(comparison_data_fixed['Test Set (0.1)']):
     plt.text(i + width/2, v + 0.02, f'{v:.3f}', ha='center')
-
-plt.tight_layout()
-plt.show()
-
-# ======================================================================
-# Side-by-side confusion matrices for combined and test sets
-# ======================================================================
-
-fig, axs = plt.subplots(1, 2, figsize=(14, 6))
-
-ConfusionMatrixDisplay(cm_combined).plot(ax=axs[0], cmap='Blues')
-axs[0].set_title('Confusion Matrix - Combined (threshold=0.1)')
-
-ConfusionMatrixDisplay(cm_test).plot(ax=axs[1], cmap='Greens')
-axs[1].set_title('Confusion Matrix - Test (threshold=0.1)')
 
 plt.tight_layout()
 plt.show()
