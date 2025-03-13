@@ -171,5 +171,86 @@ Extreme Gradient Boosting (XGBoost) is a powerful and efficient implementation o
 
 The ROC curve illustrates the model’s performance on the test set. A **ROC AUC of 0.63** indicates that while the model has improved over GBDT, further optimizations are needed for better prediction accuracy.
 
+## Randomforest Regression
+
+**Processing Logic:**<br>
+The goal of this project is to use a randomforest regression model to predict whether a customer will repurchase an item based on various features. The process involves:<br>
+1.	Data Preparation: Loading and preprocessing data from train_set.csv and test_set.csv.<br>
+2.	Data Split and Feature Scaling: Using customer behavior metrics as predictive features.<br>
+3.	Model Parameter Selection :Using 2-fold cross validation of grid search to locate the optimal parameter choic <br>
+4.	Model Hyperparmeter Selection: Use 100-folds cross validation grid search with narrower scope
+5.	Evaluation: Assessing model performance using balanced accuracy score, AUC-PR, weighted precision, weighted recall,weighted F1 score.<br>
+6.	Test threshold and Predict on Test Data: Test different value of threshold and make final predictions.<br>
+
+**Key Functions:** <br>
+`skf = StratifiedKFold(n_splits=2, shuffle=True, random_state=42))`: stratified two folds coarse grid search for selecting parameters<br>
+`cv = StratifiedKFold(n_splits=100, shuffle=True, random_state=42)`: stratified 100 folds fine-grained gird search for optimal value of focal parameter <br>
+`model = RandomForestClassifier(**params)`<br>
+`y_test_prob = best_model.predict_proba(X_test_scaled)[:, 1]`:predicted probability of repurchase
+`y_test_pred_fixed = (y_test_prob >= fixed_threshold).astype(int)`: predicted labels of repurchase <br>
+`def calculate_auc_pr(y_true, y_prob):`<br>
+    precision, recall, _ = precision_recall_curve(y_true, y_prob)<br>
+    return auc(recall, precision) <br>
+`val_accuracy = balanced_accuracy_score(y_val, y_val_pred_baseline)`: balanced accuracy score  <br>
+`val_precision = precision_score(y_val, y_val_pred_baseline,average='weighted')`:weighted precision <br>
+`val_recall = recall_score(y_val, y_val_pred_baseline,average='weighted')`:weighted recall <br>
+`val_f1 = f1_score(y_val, y_val_pred_baseline,average='weighted')`: weighted f1 score <br>
+
+**Results & Figures:** <br>
+
+1.Baseline Model:<br>
+base_params = {<br>
+    'n_estimators': 100,<br>
+    'max_depth': None,<br>
+    'min_samples_split': 2,<br>
+    'min_samples_leaf': 1,<br>
+    'random_state': 42 <br>
+}<br>
+Baseline Model - Training vs. Validation Metrics:
+               Metric  Training  Validation
+0              AUC-PR    1.0000      0.0807
+1  Weighted Precision    0.9999      0.8867
+2     Weighted Recall    0.9999      0.9376
+3   Weighted F1-Score    0.9999      0.9086
+4   Balanced Accuracy    0.9995      0.5003
+
+![image](https://github.com/user-attachments/assets/941eef4a-bcd7-4009-9e14-bba2e4b801f2)
+
+2.Parameter Selection:<br>
+param_values = {<br>
+    'n_estimators': [1, 10, 20, 30],<br>
+    'max_depth': [1, 5, 8, 15, None],<br>
+    'min_samples_split': [2, 10, 20, 35, 50],<br>
+    'min_samples_leaf': [1, 5, 10, 15, 30, 50],<br>
+    'max_features': ['sqrt', 'log2', None]<br>
+}<br>
+![image](https://github.com/user-attachments/assets/7be9d7e2-29c2-4492-a4f8-9b4af5004f70)
+
+3.Optimal value Selection:<br>
+fine_param_grid = {<br>
+    'max_depth': [1],<br>
+    'min_samples_leaf': [8,9,10,11,12],<br>
+    'min_samples_split': [10,12,14,16,18,20,22,24,26,28,30],<br>
+    'n_estimators': [1],<br>
+    'max_features': [None],<br>
+    'random_state': [42]<br>
+}<br>
+
+Best parameters: `max_depth=1`,`n_estimators=1`,`min_samples_leaf=8`,`min_samples_split=10`,`max_features=None`,`random_state=42`
+
+Performance compared to baseline:<br>
+Baseline model - Validation AUC-PR: 0.0807<br>
+Best fine-tuned model - Validation AUC-PR: 0.1295<br>
+Absolute improvement: 0.0488<br>
+Percentage improvement: 60.52%<br>
+![image](https://github.com/user-attachments/assets/306d8381-0677-4b5c-89ee-f88998636565)
+
+4.Final results at optimal threshold<br>
+Fixed threshold: 0.1<br>
+![image](https://github.com/user-attachments/assets/7be35b44-1e93-4f13-83e5-bcb579e88e5e)
+
+**Limitations:** <br>
+1、there is extremly limited positive cases in raw data,exerting a huge risk of caputuring enough variation for prediction in cross-validation splits even ajusted by weighted measure or endeavors to avoid overfitting (decreasing n_estimators and max_depth while increasing min_samples_leaf and min_samples_splits)
+2、the limited number of features at hand makes it hard to test different combination of feature subset (refer to the decreasing performance after restrict feature inputs)
 
 
