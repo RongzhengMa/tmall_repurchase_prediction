@@ -1,4 +1,68 @@
-# tmall_repurchase_prediction
+# Tmall_repurchase_prediction
+### Group Name: Cheesecake
+### Group Member: Yuan Gao, Rongzheng Ma, Tianyi Ma, Huiwen Lian, and Yishan Yuan
+
+# Problem of the project
+Merchants sometimes run big promotions on particular dates in order to attract a large number of new buyers. Unfortunately, many of the attracted buyers are one-time deal hunters, and these promotions may have little long lasting impact on sales. 
+
+
+# Goal of the project
+To predict the probability that these new buyers would purchase items from the same merchants again within 6 months.
+
+
+# Source of dataset
+The dataset was provided by the Chinese e-commerce platform Tmall for a coding competition, Repeat Buyers Prediction Challenge.
+https://tianchi.aliyun.com/competition/entrance/231576/information
+
+
+# Data collection methods
+Downloading data from the source.
+
+The documentation of the data:
+
+The data contains information about a set of merchants and their corresponding new buyers, including user profiles and behavior logs, collected during the promotion on "Double 11" day.
+![image](https://github.com/RongzhengMa/tmall_repurchase_prediction/blob/main/figures/Figure_4.png) <br>
+
+
+# What isn't in the data?
+User income, context about promotions or discounts, product price and ratings, and merchant ratings, etc.
+ 
+
+# Limitation of data
+The dataset only captures a single promotional period (Double 11). Also, user behavior during this period may not represent normal shopping patterns, leading to data bias.
+
+
+
+# Limitation of Data
+
+It is necessary to extract features from the user profile table and user log table based on user_id and merchant_id (seller_id), and fill them into the df_train dataframe for training and evaluating the model.
+
+# Work Flow
+Feature Engineering -> 5 types of Modeling (Logit, GBDT, XGBoost, Random Forest, and H2O's AutoML) -> Evaluation
+
+
+
+## Feature Engineering
+Using the `python3 feature_engineering.py` on the cmd to run the data.
+
+**Key tasks in `feature_engineering.py`:** <br>
+1. Handling Invalid Values:
+Replace invalid values (0 and NULL for age, 2 and NULL for gender) with -1 for visualization, and then convert them to NaN for merging.
+![image](https://github.com/RongzhengMa/tmall_repurchase_prediction/blob/main/figures/Figure_6.png) <br>
+
+2. Extracting User & Merchant Features based on user_id and merchant_id (seller_id):
+![image](https://github.com/RongzhengMa/tmall_repurchase_prediction/blob/main/figures/Figure_5.png) <br>
+
+3. Merging the features into dataframe:
+Fill missing (NaN) values using the last available value in the column to maintain consistency when a user’s attributes are missing.
+
+4. Generates a correlation heatmap for feature relationships:
+![image](https://github.com/RongzhengMa/tmall_repurchase_prediction/blob/main/figures/Figure_7.png) <br>
+
+5. Splitting Data & Saving to CSV:
+Split the dataframe into 80% train set and 20% test set<br>
+<br>
+<br>
 
 ## Logistic Regression for Repurchase Prediction
 
