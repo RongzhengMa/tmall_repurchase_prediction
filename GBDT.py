@@ -1,90 +1,69 @@
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.metrics import roc_curve, auc, classification_report
-import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
-from sklearn.model_selection import RandomizedSearchCV
-from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.model_selection import RandomizedSearchCV, train_test_split
+from sklearn.metrics import roc_curve, auc, classification_report, roc_auc_score
+
 # Load data
 train_df = pd.read_csv('data/train_set.csv')
 test_df = pd.read_csv('data/test_set.csv')
-
-x = train_df.drop(['user_id','merchant_id','label'],axis=1)
+x = train_df.drop(['user_id', 'merchant_id', 'label'], axis=1)
 y = train_df['label']
 
-x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=.2, random_state = 42)
-params = {
-    'n_estimators': 2000,  # 同 'n_estimators'
-    'max_depth': 5,  # 同 'max_depth'
-    'learning_rate': 0.01,  # 同 'learning_rate'
-    'min_samples_leaf': 4,  # 同 'min_data_in_leaf'
-    'subsample': 0.8,  # 同 "colsample_bytree"，但这是整个数据集的比例，而不是特征的比例
-    'max_features': 0.8,  # 同 "colsample_bytree"，但这是特征的比例，GradientBoostingClassifier中没有直接对应的参数，这里假设是特征的比例
-    'random_state': 42,  # 同 'seed'
-}
-
-# GradientBoostingClassifier
-gbm = GradientBoostingClassifier(**params)
-
-# train
-gbm.fit(x_train, y_train)
-
-#prediction
-gbm_pred = gbm.predict(x_val)
-gbm_proba = gbm.predict_proba(x_val)
-
-# 
-print('模型的评估报告：\n', classification_report(y_val, gbm_pred))
-# ROC curve
-fpr, tpr, thresholds = roc_curve(y_val, gbm_proba[:, 1])
-roc_auc = auc(fpr, tpr)
-plt.figure()
-plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % roc_auc)
-plt.xlabel('False Positive Rate')
-plt.ylabel('True Positive Rate')
-plt.title('Receiver Operating Characteristic')
-plt.legend(loc="lower right")
-plt.show()
+# train and test
+x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.2, random_state=42)
 
 # param_distributio
 param_distributions = {
-    'n_estimators': [50, 100, 150],
-    'max_depth': [3, 5, 7],
-    'learning_rate': [0.01, 0.05, 0.1]
+    'n_estimators': [1200],            
+    'max_depth': [4],                       
+    'learning_rate':[0.011421052631578946],          
+    'min_samples_leaf': [18],               
+    'subsample': [0.7],                  
+    'max_features': [0.9]                
 }
 
-# 创建RandomizedSearchCV实例
-random_search = RandomizedSearchCV(estimator=GradientBoostingClassifier(), param_distributions=param_distributions,
-                                   n_iter=20, cv=3, n_jobs=-1, scoring='roc_auc', verbose=1, random_state=42)
+# RandomizedSearchCV 
+random_search = RandomizedSearchCV(
+    estimator=GradientBoostingClassifier(random_state=42),
+    param_distributions=param_distributions,
+    n_iter=50,          
+    scoring='roc_auc',
+    cv=3,
+    n_jobs=-1,
+    verbose=1,
+    random_state=42
+)
 
-# 执行随机搜索
 random_search.fit(x_train, y_train)
 
-# 输出最佳参数
+# best ROC AUC
 print("Best parameters found: ", random_search.best_params_)
+print("Best ROC AUC on validation (CV):", random_search.best_score_)
 
-# 使用最佳参数创建模型
+# evaluation
 best_gbm = random_search.best_estimator_
+y_val_pred = best_gbm.predict(x_val)
+y_val_proba = best_gbm.predict_proba(x_val)[:, 1]
 
-# 使用最佳模型进行预测
-best_gbm_pred = best_gbm.predict(x_val)
-best_gbm_proba = best_gbm.predict_proba(x_val)
+print("Validation classification report:\n", classification_report(y_val, y_val_pred))
+print("Validation ROC AUC:", roc_auc_score(y_val, y_val_proba))
 
-# 打印分类报告
-print('Best model evaluation report:\n', classification_report(y_val, best_gbm_pred))
-# 绘制ROC曲线
-best_fpr, best_tpr, best_thresholds = roc_curve(y_val, best_gbm_proba[:, 1])
-best_roc_auc = auc(best_fpr, best_tpr)
+# ROC curve
+fpr, tpr, thresholds = roc_curve(y_val, y_val_proba)
+roc_auc_value = auc(fpr, tpr)
 plt.figure()
-plt.plot(best_fpr, best_tpr, label='ROC curve (area = %0.2f)' % best_roc_auc)
+plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % roc_auc_value)
 plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
-plt.title('Receiver Operating Characteristic - Best Model')
+plt.title('ROC Curve - Best Model (Validation)')
 plt.legend(loc="lower right")
+plt.savefig('roc_curve.png')
 plt.show()
 
-#csv
+# CSV file
 x_test_final = test_df.drop(['user_id', 'merchant_id', 'label'], axis=1)
-
 test_pred = best_gbm.predict(x_test_final)
 test_pred_proba = best_gbm.predict_proba(x_test_final)[:, 1]
 

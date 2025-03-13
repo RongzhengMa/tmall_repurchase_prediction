@@ -18,7 +18,7 @@ X_train, X_val, y_train, y_val = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# 4. 计算类别比例，用于设置 scale_pos_weight（若类别不均衡）
+# 
 scale_pos_weight = len(y_train[y_train == 0]) / len(y_train[y_train == 1])
 
 
@@ -55,13 +55,11 @@ random_search = RandomizedSearchCV(
 random_search.fit(X_train, y_train)
 print("Best parameters found:", random_search.best_params_)
 
-# 
 best_xgb = random_search.best_estimator_
 y_val_pred = best_xgb.predict(X_val)
 print("Validation evaluation:")
 print(classification_report(y_val, y_val_pred))
 
-# 9. 在验证集上调整预测阈值
 val_pred_prob = best_xgb.predict_proba(X_val)[:, 1]
 precision_val, recall_val, thresholds_val = precision_recall_curve(y_val, val_pred_prob)
 # cal F1-score
