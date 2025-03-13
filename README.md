@@ -116,6 +116,8 @@ $$
 
 ## Logistic Regression for Repurchase Prediction
 
+Using `logit.py` to conduct whole process<br>
+
 **Processing Logic:**<br>
 The goal of this project is to use a logistic regression model to predict whether a customer will repurchase an item based on various features. The process involves:<br>
 1.	Data Preparation: Loading and preprocessing data from train_set.csv and test_set.csv.<br>
@@ -166,10 +168,12 @@ ROC Curve
 ### Overview
 Gradient Boosting Decision Trees (GBDT) is an ensemble learning technique that builds multiple weak decision trees sequentially, with each new tree correcting the errors of the previous ones. It is particularly effective for structured data and can capture complex patterns in customer behavior.
 
+Using `GBDT.py` to conduct whole process<br>
+
 ### Data Processing & Modeling Steps
 
 - **Feature Engineering:**
-  - Removed irrelevant identifiers such as `user_id`, `merchant_id`, and the target label.
+  - Removed irrelevantGidentifiers such as `user_id`, `merchant_id`, and the target label.
   - Incorporated behavioral and transactional features extracted from user logs.
 
 - **Data Splitting:**
@@ -229,6 +233,8 @@ Gradient Boosting Decision Trees (GBDT) is an ensemble learning technique that b
 The ROC curve illustrates the model’s performance. A **ROC AUC of 0.61** suggests limited predictive capability, indicating the need for further refinement and feature optimization.
 
 ## XGBoost
+
+Using `xgboost.py` to conduct whole process<br>
 
 ### Overview
 Extreme Gradient Boosting (XGBoost) is a powerful and efficient implementation of gradient boosting, designed for high performance and scalability. It is particularly effective for structured data and is widely used for classification and regression tasks. XGBoost employs a combination of decision trees and boosting techniques to minimize error iteratively, making it an ideal choice for customer behavior prediction.
@@ -308,6 +314,8 @@ Extreme Gradient Boosting (XGBoost) is a powerful and efficient implementation o
 The ROC curve illustrates the model’s performance on the test set. A **ROC AUC of 0.63** indicates that while the model has improved over GBDT, further optimizations are needed for better prediction accuracy.
 
 ## Randomforest Regression
+
+Using `randomforest.py` to conduct whole process<br>
 
 ### Processing Logic:
 The goal of this project is to use a randomforest regression model to predict whether a customer will repurchase an item based on various features. The process involves:<br>
@@ -428,7 +436,9 @@ fine_param_grid = {
 
 ## Stacking Model
 
-### Overview 
+### Overview
+
+Using `automl.py` to conduct whole process<br>
 
 In our project, we employed a Stacked Ensemble Model to improve the prediction accuracy for customer repurchase behavior. Stacking, or stacked generalization, is an ensemble learning technique that combines multiple base models to form a stronger predictive model. This approach leverages the strengths of various algorithms to achieve better performance than individual models.​
 
@@ -460,6 +470,8 @@ Details of the Best Stacking Model:
 </p>
 
 ## Model Evaluation Results
+
+Using `Model_Evalution_Results.csv` to conduct whole process<br>
 
 <div align="center">
   
