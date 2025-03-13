@@ -132,7 +132,7 @@ if torch.cuda.is_available():
 
 # Establish baseline model
 base_params = {
-    'n_estimators': 30,
+    'n_estimators': 100,
     'max_depth': None,
     'min_samples_split': 2,
     'min_samples_leaf': 1,
@@ -207,7 +207,7 @@ from sklearn.metrics import precision_recall_curve, auc
 param_names = ['n_estimators', 'max_depth', 'min_samples_split', 'min_samples_leaf','max_features']
 param_values = {
     'n_estimators': [1, 10, 20, 30],
-    'max_depth': [2, 5, 8, 15, None],
+    'max_depth': [1, 5, 8, 15, None],
     'min_samples_split': [2, 10, 20, 35, 50],
     'min_samples_leaf': [1, 5, 10, 15, 30, 50],
     'max_features': ['sqrt', 'log2', None]
@@ -453,7 +453,7 @@ auc_pr_scorer = make_scorer(auc_pr_score, needs_proba=True, greater_is_better=Tr
 
 # Define a more refined parameter grid
 fine_param_grid = {
-    'max_depth': [2],
+    'max_depth': [1],
     'min_samples_leaf': [8,9,10,11,12],
     'min_samples_split': [10,12,14,16,18,20,22,24,26,28,30],
     'n_estimators': [1],
@@ -481,7 +481,7 @@ best_params = None
 for min_samples_leaf in fine_param_grid['min_samples_leaf']:
     for min_samples_split in fine_param_grid['min_samples_split']:
         params = {
-            'max_depth': 2,
+            'max_depth': 1,
             'min_samples_leaf': min_samples_leaf,
             'min_samples_split': min_samples_split,
             'n_estimators': 1,
@@ -663,7 +663,7 @@ print(f"Combined dataset shape: X={X_combined.shape}, y={y_combined.shape}")
 # Define best parameters
 best_params = {
     'max_depth': 1,
-    'min_samples_leaf': 4,
+    'min_samples_leaf': 8,
     'min_samples_split': 10,
     'n_estimators': 1,
     'random_state': 42
@@ -693,10 +693,10 @@ print(f"Weighted Recall: {combined_weighted_recall:.4f}")
 print(f"Weighted F1 Score: {combined_weighted_f1:.4f}")
 
 # ======================================================================
-# Use a tested optimal threshold of 0.12
+# Use a tested optimal threshold of 0.1
 # ======================================================================
 
-fixed_threshold = 0.12
+fixed_threshold = 0.1
 print(f"\nUsing a fixed threshold of {fixed_threshold} for predictions...")
 
 # Convert probabilities to binary predictions using the fixed threshold for the combined set
