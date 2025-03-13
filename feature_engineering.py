@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -5,9 +6,38 @@ plt.rcParams['font.family'] = 'Arial'
 import seaborn as sns
 from sklearn.model_selection import train_test_split
 
+def load_and_concat_csvs(directory: str) -> pd.DataFrame:
+    """
+    Load all CSV files in the specified directory, rename them with _1, _2,... suffix,
+    and concatenate them into a single DataFrame.
+    
+    :param directory: Path to the directory containing CSV files.
+    :return: A single concatenated DataFrame.
+    """
+    # Get all CSV files in the directory
+    csv_files = [f for f in os.listdir(directory) if f.endswith(".csv")]
+    csv_files.sort()  # Ensure files are sorted alphabetically
+    
+    # Rename files with sequential numbering
+    total_files = len(csv_files)
+    renamed_files = {csv_files[i]: f"file_{i+1}.csv" for i in range(total_files)}
+    
+    # Read and concatenate data
+    dataframes = []
+    for original_name, new_name in renamed_files.items():
+        file_path = os.path.join(directory, original_name)
+        df = pd.read_csv(file_path)
+        df["file_name"] = new_name  # Add a column to track the file source
+        dataframes.append(df)
+    
+    # Combine all DataFrames into a single DataFrame
+    combined_df = pd.concat(dataframes, ignore_index=True)
+    
+    return combined_df
+
 df_train = pd.read_csv('data/train_format1.csv')
 user_info = pd.read_csv('data/user_info_format1.csv')
-user_log = pd.read_csv('data/user_log_format1.csv')
+user_log = load_and_concat_csvs('data/user_log_format1')
 
 user_info['age_range'].replace(0.0,np.nan,inplace=True)
 user_info['gender'].replace(2.0,np.nan,inplace=True)
