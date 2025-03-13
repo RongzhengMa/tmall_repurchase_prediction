@@ -265,7 +265,7 @@ The goal of this project is to use a randomforest regression model to predict wh
 - **Data Preparation:** 
   - Loading and preprocessing data with 80% training set split and feature scaling
 
-- **Model Selection:** 
+- **Model Parameter Selection:** 
   - Using 2-fold cross validation of grid search to locate the optimal parameter choice
 
 - **Model Hyperparameter Search:**
