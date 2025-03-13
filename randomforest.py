@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """RandomForest.ipynb
 
-This file is originally exexuted in Google Colab notebook and then exported to .py file. Some cell employed GPU capacity for huge grid search and cross validation workload.
+This file is originally exexuted in notebook and then exported to .py file. Some cell employed GPU capacity for huge grid search and cross validation workload.
 If you cannot rerun the code in your local machine, please refer to the outputs in RandomForest.ipynb
 
 ## Data exploration
