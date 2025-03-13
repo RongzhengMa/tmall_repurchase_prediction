@@ -259,16 +259,26 @@ The ROC curve illustrates the model’s performance on the test set. A **ROC AUC
 
 ## Randomforest Regression
 
-**Processing Logic:**<br>
+### Processing Logic:
 The goal of this project is to use a randomforest regression model to predict whether a customer will repurchase an item based on various features. The process involves:<br>
-1.	Data Preparation: Loading and preprocessing data from train_set.csv and test_set.csv.<br>
-2.	Data Split and Feature Scaling: Using customer behavior metrics as predictive features.<br>
-3.	Model Parameter Selection :Using 2-fold cross validation of grid search to locate the optimal parameter choic <br>
-4.	Model Hyperparmeter Selection: Use 100-folds cross validation grid search with narrower scope
-5.	Evaluation: Assessing model performance using balanced accuracy score, AUC-PR, weighted precision, weighted recall,weighted F1 score.<br>
-6.	Test threshold and Predict on Test Data: Test different value of threshold and make final predictions.<br>
 
-**Key Functions:** <br>
+- **Data Preparation:** 
+  - Loading and preprocessing data with 80% training set split and feature scaling
+
+- **Model Selection:** 
+  - Using 2-fold cross validation of grid search to locate the optimal parameter choice
+
+- **Model Hyperparameter Search:**
+  - Use 100-folds stratified cross validation grid search with narrower scope
+ 
+- **Model Evaluation:**
+  - Assessing model performance using balanced accuracy score, AUC-PR, weighted precision, weighted recall,weighted F1 score.
+
+- **Test Threshold and Predict:** 
+  - Test different value of threshold and make final predictions on test set.
+
+### Key Functions:
+
 `skf = StratifiedKFold(n_splits=2, shuffle=True, random_state=42))`: stratified two folds coarse grid search for selecting parameters<br>
 `cv = StratifiedKFold(n_splits=100, shuffle=True, random_state=42)`: stratified 100 folds fine-grained gird search for optimal value of focal parameter <br>
 `model = RandomForestClassifier(**params)`<br>
@@ -280,9 +290,10 @@ The goal of this project is to use a randomforest regression model to predict wh
 `val_recall = recall_score(y_val, y_val_pred_baseline,average='weighted')`:weighted recall <br>
 `val_f1 = f1_score(y_val, y_val_pred_baseline,average='weighted')`: weighted f1 score <br>
 
-**Results & Figures:** <br>
+### Results & Figures:
 
-1.Baseline Model:<br>
+- **Baseline Model:**
+  - Default 100 trees test
 ```
 base_params = {
     'n_estimators': 100,
@@ -301,7 +312,11 @@ base_params = {
 | Weighted F1-Score | 0.9999  | 0.9086 |
 | Balanced Accuracy | 0.9995  | 0.5003 | 
 
-2.Parameter Selection:<br>
+![image](https://github.com/user-attachments/assets/11d5e4d1-af10-4a86-b415-1ad7086dde4c)
+
+
+- **First Stage Parameter Search:** 
+  - Iterate focal input values while fix other input as default model
 ```
 param_values = {
     'n_estimators': [1, 10, 20, 30],
@@ -313,7 +328,8 @@ param_values = {
 ```
 ![image](https://github.com/user-attachments/assets/6184d9b1-0b19-4209-ad5f-0108eeaed420)
 
-3.Optimal value Selection:<br>
+- **Optimal value Selection:** 
+  - Iterate single focal input with fine-grained steps while set other inputs as safe values to avoid overfitting
  ```
 fine_param_grid = {
     'max_depth': [1],
@@ -327,14 +343,14 @@ fine_param_grid = {
 
 **Best parameters: `max_depth=1`,`n_estimators=1`,`min_samples_leaf=8`,`min_samples_split=10`,`max_features=None`,`random_state=42`**
 
-Performance compared to baseline:<br>
+Performance compared to baseline:
 Baseline model - Validation AUC-PR: `0.0807`<br>
 Best fine-tuned model - Validation AUC-PR: `0.1295`<br>
 Absolute improvement: `0.0488`<br>
 Percentage improvement: `60.52%`<br>
 ![image](https://github.com/user-attachments/assets/306d8381-0677-4b5c-89ee-f88998636565)
 
-4.Final results at optimal threshold<br>
+- **Optimal value Selection:** <br>
 Fixed threshold: `0.1`<br>
 Test set AUC-PR: `0.1572`
 Test Accuracy: `0.8930`<br>
@@ -342,9 +358,13 @@ Test set Weighted Precision: `0.8950`<br>
 Test set weighted Recall: `0.8930`<br>
 Test set Weighted F1-Score: `0.8940`<br>
 
-**Limitations:** <br>
-1、there is extremly limited positive cases in raw data,exerting a huge risk of caputuring enough variation for prediction in cross-validation splits even ajusted by weighted measure or endeavors to avoid overfitting (decreasing n_estimators and max_depth while increasing min_samples_leaf and min_samples_splits)<br>
-2、the limited number of features at hand makes it hard to test different combination of feature subset (refer to the decreasing performance after restrict feature inputs)<br>
+### Limitations: 
+
+- **Imbalanced Set:**- 
+  - there are extremly limited positive cases in raw data,exerting a huge risk of caputuring enough variation for prediction in cross-validation splits even ajusted by weighted measure or endeavors to avoid overfitting (decreasing n_estimators and max_depth while increasing min_samples_leaf and min_samples_splits)
+- **Limited Features:**-
+  - the limited number of features at hand makes it hard to test different combination of feature subset (refer to the decreasing performance after restrict feature inputs)
+
 
 ## Stacking Model
 
